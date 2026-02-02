@@ -1,0 +1,25 @@
+# ======= COMMON FOR BOTH =======
+node_modules/
+venv/
+.env
+.env.local
+.env.*
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+.idea/
+
+# ======= FRONTEND =======
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.vercel/
+frontend/.cache/
+
+# ======= BACKEND =======
+backend/*.db
+backend/*.sqlite3
+backend/logs/
+backend/tmp/
+backend/temp/
