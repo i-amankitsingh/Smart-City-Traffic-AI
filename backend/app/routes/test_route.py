@@ -4,7 +4,7 @@ from app.utils.api_error import APIError
 
 router = APIRouter()
 
-@router.get("/test")
+@router.get("/test-route")
 async def test(name: str=None):
         if not name:
             raise APIError(404, "Name not found!")
