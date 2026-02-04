@@ -23,3 +23,13 @@ backend/*.sqlite3
 backend/logs/
 backend/tmp/
 backend/temp/
+
+# ====== YOLO ======
+# Ignore ML models
+*.pt
+*.pkl
+
+# Ignore data
+videos/
+uploads/
+
