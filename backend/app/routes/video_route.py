@@ -4,7 +4,10 @@ import os
 from app.utils.api_response import APIResponse
 from app.services.video_service import run_ml_on_video
 
-UPLOAD_DIR = "uploads"
+
+BASE_DIR = os.path.dirname(__file__) 
+
+UPLOAD_DIR = f"{BASE_DIR}/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter()
