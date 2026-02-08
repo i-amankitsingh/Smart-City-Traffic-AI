@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Upload, Play, FileVideo, Eye, Car, Activity, Gauge, AlertTriangle, Clock, CheckCircle, Loader2 } from "lucide-react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 import { cn } from "../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface ProcessedVideo {
   id: number;
@@ -52,6 +53,9 @@ const mockVideos: ProcessedVideo[] = [
 ];
 
 const RecordedAnalysis = () => {
+
+  const navigate = useNavigate();
+
   const [selectedVideo, setSelectedVideo] = useState<ProcessedVideo | null>(null);
 
   const getCongestionColor = (level: string) => {
@@ -91,7 +95,9 @@ const RecordedAnalysis = () => {
               Upload and analyze traffic recordings
             </p>
           </div>
-          <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all glow-blue">
+          <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all glow-blue"
+            onClick={() => navigate("/upload")}
+          >
             <Upload className="w-4 h-4" />
             Upload Traffic Video
           </button>
