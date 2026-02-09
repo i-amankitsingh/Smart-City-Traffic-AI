@@ -1,0 +1,42 @@
+name: Deploy Backend to Hugging Face Space
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v3
+
+      - name: Install Git LFS
+        run: |
+          sudo apt-get install git-lfs
+          git lfs install
+
+      - name: Login to Hugging Face
+        run: |
+          git config --global credential.helper store
+          echo "https://$HF_TOKEN@huggingface.co" > ~/.git-credentials
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: Clone Hugging Face Space
+        run: |
+          git clone https://huggingface.co/spaces/${{ github.repository_owner }}/smart-city-traffic-backend hf-space
+
+      - name: Copy backend to Space
+        run: |
+          rm -rf hf-space/*
+          cp -r backend/* hf-space/
+
+      - name: Commit and push to Hugging Face
+        run: |
+          cd hf-space
+          git add .
+          git commit -m "Auto-deploy from GitHub"
+          git push
