@@ -18,16 +18,11 @@ jobs:
           sudo apt-get install git-lfs
           git lfs install
 
-      - name: Login to Hugging Face
+      - name: Clone Hugging Face Space (AUTH FIXED)
         run: |
-          git config --global credential.helper store
-          echo "https://$HF_TOKEN@huggingface.co" > ~/.git-credentials
+          git clone https://$HF_TOKEN@huggingface.co/spaces/i-amankitsingh/smart-city-traffic-backend hf-space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-
-      - name: Clone Hugging Face Space
-        run: |
-          git clone https://huggingface.co/spaces/${{ github.repository_owner }}/smart-city-traffic-backend hf-space
 
       - name: Copy backend to Space
         run: |
@@ -38,5 +33,5 @@ jobs:
         run: |
           cd hf-space
           git add .
-          git commit -m "Auto-deploy from GitHub"
+          git commit -m "Auto-deploy from GitHub" || echo "No changes to commit"
           git push
