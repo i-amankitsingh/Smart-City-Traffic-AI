@@ -47,7 +47,7 @@ const Settings = () => {
                 <span
                   className={cn(
                     "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
-                    notifications ? "translate-x-7" : "translate-x-1"
+                    notifications ? "translate-x-1" : "translate-x-[-20px]"
                   )}
                 />
               </button>
@@ -83,7 +83,7 @@ const Settings = () => {
                 <span
                   className={cn(
                     "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
-                    autoProcess ? "translate-x-7" : "translate-x-1"
+                    autoProcess ? "translate-x-1" : "translate-x-[-20px]"
                   )}
                 />
               </button>
@@ -104,7 +104,7 @@ const Settings = () => {
                 <span
                   className={cn(
                     "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
-                    highQuality ? "translate-x-7" : "translate-x-1"
+                    highQuality ? "translate-x-1" : "translate-x-[-20px]"
                   )}
                 />
               </button>
