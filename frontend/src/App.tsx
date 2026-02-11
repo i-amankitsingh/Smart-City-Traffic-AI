@@ -11,6 +11,7 @@ import TrafficAnalytics from './pages/TrafficAnalytics'
 import ModelInsights from './pages/ModelInsights'
 import Settings from './pages/Settings'
 import NotFound from './pages/NotFound'
+import Account from './pages/Account'
 
 const queryClient = new QueryClient();
 
@@ -29,7 +30,7 @@ function App() {
             <Route path="/upload" element={<UploadVideo />} />
             <Route path="/insights" element={<ModelInsights />} />
             <Route path="/settings" element={<Settings />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/account" element={<Account />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

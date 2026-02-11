@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { User, Bell } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -59,9 +59,11 @@ export function Navbar() {
 
         {/* User Profile */}
         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <User className="w-4 h-4 text-primary" />
-          </div>
+          <Link to="/account">
+            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+              <User className="w-4 h-4 text-primary" />
+            </div>
+          </Link>
         </button>
       </div>
     </header>
