@@ -12,7 +12,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter()
 
-@router.get("/process-video")
+@router.post("/process-video")
 async def process_video(file: UploadFile = File(...)):
     video_path = f"{UPLOAD_DIR}/{file.filename}"
      

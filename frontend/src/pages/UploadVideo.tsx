@@ -1,9 +1,12 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, FileVideo, X, CheckCircle, ArrowLeft, Film, HardDrive } from "lucide-react";
+import { Upload, FileVideo, X, CheckCircle, ArrowLeft, Film, HardDrive, BarChart3, Car, Layers, Gauge, Activity } from "lucide-react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 import { Progress } from "../components/ui/progress";
 import { cn } from "../lib/utils";
+import { processVideo } from "@/services/videoService";
+import { toast } from "sonner";
+import type { MLResponseData } from "@/schema/videoSchema";
 
 const UploadVideo = () => {
   const navigate = useNavigate();
@@ -13,6 +16,7 @@ const UploadVideo = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
+  const [mlResult, setMlResult] = useState<MLResponseData>();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -48,22 +52,24 @@ const UploadVideo = () => {
     }
   };
 
-  const simulateUpload = () => {
+  const simulateUpload = async () => {
     setIsUploading(true);
     setUploadProgress(0);
 
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-          setUploadComplete(true);
-          return 100;
-        }
-        return prev + Math.random() * 15;
-      });
-    }, 300);
+    try {
+      const data = await processVideo({ file: selectedFile!, onProgress: setUploadProgress });
+      console.log("Data: ", data);
+      setMlResult(data?.data);
+      toast.success("Video process successfully!");
+    } catch (error) {
+      toast.error("Error while procssing the video!");
+      throw error;
+    } finally {
+      setIsUploading(false);
+    }
   };
+
+  console.log("Progress: ", uploadProgress);
 
   const removeFile = () => {
     setSelectedFile(null);
@@ -199,7 +205,7 @@ const UploadVideo = () => {
                       disabled={isUploading}
                       className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all glow-blue disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isUploading ? "Uploading..." : "Start Upload & Analysis"}
+                      {isUploading ? (uploadProgress >= 100 ? "Processing frames with AI detection…" : "Uploading...") : "Start Upload & Analysis"}
                     </button>
                     <button
                       onClick={removeFile}
@@ -229,6 +235,41 @@ const UploadVideo = () => {
             </div>
           )}
         </div>
+
+        {uploadComplete && mlResult && (
+          <div className="glass-card rounded-xl p-6 animate-fade-in">
+            <div className="flex items-center gap-2 mb-6">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold text-foreground text-lg">ML Model Analysis Results</h3>
+              <span className={cn(
+                "ml-auto px-3 py-1 rounded-full text-xs font-semibold",
+                mlResult?.congestion_level === "Low" ? "status-online" :
+                  mlResult?.congestion_level === "Medium" ? "bg-warning/20 text-warning border border-warning/30" :
+                    "status-offline"
+              )}>
+                {mlResult?.congestion_level} Congestion
+              </span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "Average Car Count", value: mlResult?.avg_card_count, icon: Car, unit: "" },
+                { label: "Total Frames", value: mlResult?.total_frames.toLocaleString(), icon: Layers, unit: "" },
+                { label: "Motion Score", value: mlResult?.motion_score, icon: Activity, unit: "/100" },
+                { label: "Vehicle Density", value: mlResult?.vehicle_denisty, icon: Gauge, unit: "%" },
+              ].map((item) => (
+                <div key={item.label} className="p-4 rounded-xl bg-muted/40 border border-border/50 hover:border-primary/30 transition-colors">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <item.icon className="w-4 h-4 text-primary" />
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-foreground">{item.value}{item.unit}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Supported Formats Info */}
         <div className="glass-card rounded-xl p-6">
