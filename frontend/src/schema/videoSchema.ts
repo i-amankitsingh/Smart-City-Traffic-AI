@@ -6,10 +6,10 @@ export interface VideoRequestData {
 
 
 export interface MLResponseData {
-    avg_card_count: number;
+    avg_car_count: number;
     avg_bike_count: number;
     avg_heavy_vehicles: number;
-    vehicle_denisty: number;
+    vehicle_density: number;
     avg_speed: number;
     motion_score: number;
     weather_code: number;

@@ -60,6 +60,7 @@ const UploadVideo = () => {
       const data = await processVideo({ file: selectedFile!, onProgress: setUploadProgress });
       console.log("Data: ", data);
       setMlResult(data?.data);
+      setUploadComplete(true);
       toast.success("Video process successfully!");
     } catch (error) {
       toast.error("Error while procssing the video!");
@@ -252,10 +253,10 @@ const UploadVideo = () => {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: "Average Car Count", value: mlResult?.avg_card_count, icon: Car, unit: "" },
-                { label: "Total Frames", value: mlResult?.total_frames.toLocaleString(), icon: Layers, unit: "" },
-                { label: "Motion Score", value: mlResult?.motion_score, icon: Activity, unit: "/100" },
-                { label: "Vehicle Density", value: mlResult?.vehicle_denisty, icon: Gauge, unit: "%" },
+                { label: "Average Car Count", value: mlResult?.avg_car_count?.toFixed(2), icon: Car, unit: "" },
+                { label: "Total Frames", value: mlResult?.total_frames?.toFixed(2), icon: Layers, unit: "" },
+                { label: "Motion Score", value: mlResult?.motion_score?.toFixed(2), icon: Activity, unit: "" },
+                { label: "Vehicle Density", value: mlResult?.vehicle_density?.toFixed(2), icon: Gauge, unit: "%" },
               ].map((item) => (
                 <div key={item.label} className="p-4 rounded-xl bg-muted/40 border border-border/50 hover:border-primary/30 transition-colors">
                   <div className="flex items-center gap-2 mb-3">
