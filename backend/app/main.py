@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.utils.api_error import APIError
+from app.core.database import connect_db, close_db
 from app.routes.router import router as v1_router
 
 app = FastAPI(title="AI Traffic Backend")
@@ -30,6 +31,14 @@ async def api_error_handler(request: Request, exc: APIError):
     )
 
 app.include_router(v1_router, prefix="/api/v1")
+
+@app.on_event("startup")
+async def startup():
+    await connect_db()
+    
+@app.on_event("shutdown")
+async def shutdown():
+    await close_db()
 
 
 if __name__ == "__main__":
