@@ -62,7 +62,8 @@ nbconvert==7.17.0
 nbformat==5.10.4
 networkx==3.2.1
 numpy==1.26.4
-opencv-python==4.13.0.90
+# opencv-python==4.13.0.90
+opencv-python==4.10.0.84
 opt_einsum==3.4.0
 optree==0.18.0
 packaging==26.0
